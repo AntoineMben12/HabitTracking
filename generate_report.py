@@ -1,108 +1,124 @@
-from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 
-# Constants for colors
-HEADING_COLOR = '#0066CC'
-HIGHLIGHT_COLOR = '#FF3333'
-BACKGROUND_COLOR = colors.whitesmoke
+# PDF Report Generator
 
-# Create our PDF
-def generate_report():
-    pdf_filename = "HabitTracking_Report.pdf"
-    document = SimpleDocTemplate(pdf_filename, pagesize=letter)
+def generate_report(filename):
+    # Create a PDF document
+    pdf = SimpleDocTemplate(filename, pagesize=letter)
+    # Styles for the document
     styles = getSampleStyleSheet()
-    # Custom style for headings
-    heading_style = ParagraphStyle(name='HeadingStyle', fontName='Helvetica-Bold', fontSize=14, textColor=colors.HexColor(HEADING_COLOR))
+    blue_heading = ParagraphStyle(name='BlueHeading', fontSize=18, spaceAfter=12, textColor=colors.HexColor('#0066CC'))
+    red_accent = ParagraphStyle(name='RedAccent', fontSize=12, spaceAfter=6, textColor=colors.HexColor('#FF3333'))
+    white_background = colors.HexColor('#FFFFFF')
 
-    # Content list
+    # Document content
     content = []
+    content.append(Paragraph('Cover Page', blue_heading))
+    content.append(Spacer(1, 12))
+    content.append(Paragraph('Habit Tracking Web Application Report', styles['Normal']))
+    content.append(Spacer(1, 12))
+    content.append(Paragraph('Student: Zeumo yemele brandon cyrian', styles['Normal']))
+    content.append(Paragraph('Teacher: Mr. Tchoua', styles['Normal']))
+    content.append(Spacer(1, 24))
 
-    # Cover Page
-    content.append(Paragraph('Habit Tracking Web Application Report', heading_style))
+    content.append(Paragraph('Table of Contents', blue_heading))
     content.append(Spacer(1, 12))
-    content.append(Paragraph('Student Name: Zeumo yemele brandon cyrian', styles['Normal']))
-    content.append(Spacer(1, 12))
-    content.append(Paragraph('Teacher Name: Mr. Tchoua', styles['Normal']))
-    content.append(Spacer(1, 12))
-    content.append(Paragraph('GitHub Link: <a href="https://github.com/antoinemben12/HabitTracking.git">https://github.com/antoinemben12/HabitTracking.git</a>', styles['Normal']))
-    content.append(PageBreak())
+    content.append(Paragraph('1. Executive Summary
+2. Project Overview
+3. Problem Statement
+4. Proposed Solution
+5. Database Architecture
+6. System Architecture
+7. Features and Functionality
+8. UI/UX Design
+9. Installation Guide
+10. Code Implementation
+11. Testing and Deployment
+12. Conclusion and Future Enhancements', styles['Normal']))
+    content.append(Spacer(1, 24))
 
-    # Table of Contents
-    content.append(Paragraph('Table of Contents', heading_style))
+    # Executive Summary
+    content.append(Paragraph('Executive Summary', blue_heading))
     content.append(Spacer(1, 12))
-    toc = ["1. Project Overview", "2. Problem Statement", "3. Database Schema Documentation", "4. System Architecture", "5. Features and Functionality", "6. UI/UX Description", "7. Installation Guide", "8. Code Highlights", "9. Conclusion"]
-    for item in toc:
-        content.append(Paragraph(item, styles['Normal']))
-    content.append(PageBreak())
+    content.append(Paragraph('This report outlines...', styles['Normal']))
+    content.append(Spacer(1, 24))
 
     # Project Overview
-    content.append(Paragraph('1. Project Overview', heading_style))
+    content.append(Paragraph('Project Overview', blue_heading))
     content.append(Spacer(1, 12))
-    content.append(Paragraph('This report outlines the Habit Tracking Web Application designed to assist users in managing their habits effectively.', styles['Normal']))
-    content.append(PageBreak())
+    content.append(Paragraph('The Habit Tracking Web Application...', styles['Normal']))
+    content.append(Spacer(1, 24))
 
     # Problem Statement
-    content.append(Paragraph('2. Problem Statement', heading_style))
+    content.append(Paragraph('Problem Statement', blue_heading))
     content.append(Spacer(1, 12))
-    content.append(Paragraph('The application addresses the need for users to track their habits in a user-friendly platform.', styles['Normal']))
-    content.append(PageBreak())
+    content.append(Paragraph('Many individuals struggle... ', styles['Normal']))
+    content.append(Spacer(1, 24))
 
-    # Database Schema Documentation
-    content.append(Paragraph('3. Database Schema Documentation', heading_style))
+    # Proposed Solution
+    content.append(Paragraph('Proposed Solution', blue_heading))
     content.append(Spacer(1, 12))
-    content.append(Paragraph('The database consists of 4 main tables:', styles['Normal']))
-    content.append(Spacer(1, 12))
-    db_tables = {
-        'users': 'Stores user information including id, name, and email.',
-        'habits': 'Tracks different habits with user associations and status.',
-        'habit_logs': 'Logs instances of habit completion for a user.',
-        'reminders': 'Manages reminders set by users for their habits.'
-    }
+    content.append(Paragraph('Our solution is to develop...', styles['Normal']))
+    content.append(Spacer(1, 24))
 
-    for table, description in db_tables.items():
-        content.append(Paragraph(f' - {table}: {description}', styles['Normal']))
-    content.append(PageBreak())
+    ## Database Architecture (4 pages)
+    for i in range(4):
+        content.append(Paragraph('Database Architecture - Page {0}'.format(i + 1), blue_heading))
+        content.append(Spacer(1, 12))
+        content.append(Paragraph('Detailed explanation of the database architecture...', styles['Normal']))
+        content.append(Spacer(1, 24))
 
-    # System Architecture
-    content.append(Paragraph('4. System Architecture', heading_style))
-    content.append(Spacer(1, 12))
-    content.append(Paragraph('The system utilizes a client-server architecture with a structured database.', styles['Normal']))
-    content.append(PageBreak())
+    ## System Architecture (3 pages)
+    for i in range(3):
+        content.append(Paragraph('System Architecture - Page {0}'.format(i + 1), blue_heading))
+        content.append(Spacer(1, 12))
+        content.append(Paragraph('Overview of the system architecture...', styles['Normal']))
+        content.append(Spacer(1, 24))
 
-    # Features and Functionality
-    content.append(Paragraph('5. Features and Functionality', heading_style))
-    content.append(Spacer(1, 12))
-    content.append(Paragraph('Main features include user registration, habit tracking, notifications, and reporting.', styles['Normal']))
-    content.append(PageBreak())
+    ## Features and Functionality (3 pages)
+    for i in range(3):
+        content.append(Paragraph('Features and Functionality - Page {0}'.format(i + 1), blue_heading))
+        content.append(Spacer(1, 12))
+        content.append(Paragraph('Description of key features...', styles['Normal']))
+        content.append(Spacer(1, 24))
 
-    # UI/UX Description
-    content.append(Paragraph('6. UI/UX Description', heading_style))
-    content.append(Spacer(1, 12))
-    content.append(Paragraph('The user interface is designed to be intuitive and responsive.', styles['Normal']))
-    content.append(PageBreak())
+    ## UI/UX Design (3 pages)
+    for i in range(3):
+        content.append(Paragraph('UI/UX Design - Page {0}'.format(i + 1), blue_heading))
+        content.append(Spacer(1, 12))
+        content.append(Paragraph('Explanation of UI/UX design...', styles['Normal']))
+        content.append(Spacer(1, 24))
 
-    # Installation Guide
-    content.append(Paragraph('7. Installation Guide', heading_style))
-    content.append(Spacer(1, 12))
-    content.append(Paragraph('To install the application, follow these steps: ...', styles['Normal']))
-    content.append(PageBreak())
+    ## Installation Guide (2 pages)
+    for i in range(2):
+        content.append(Paragraph('Installation Guide - Page {0}'.format(i + 1), blue_heading))
+        content.append(Spacer(1, 12))
+        content.append(Paragraph('Steps to install...', styles['Normal']))
+        content.append(Spacer(1, 24))
 
-    # Code Highlights
-    content.append(Paragraph('8. Code Highlights', heading_style))
-    content.append(Spacer(1, 12))
-    content.append(Paragraph('Key snippets of the application code, demonstrating features.', styles['Normal']))
-    content.append(PageBreak())
+    ## Code Implementation (2 pages)
+    for i in range(2):
+        content.append(Paragraph('Code Implementation - Page {0}'.format(i + 1), blue_heading))
+        content.append(Spacer(1, 12))
+        content.append(Paragraph('Overview of the code implementation...', styles['Normal']))
+        content.append(Spacer(1, 24))
 
-    # Conclusion
-    content.append(Paragraph('9. Conclusion', heading_style))
+    # Testing and Deployment
+    content.append(Paragraph('Testing and Deployment', blue_heading))
     content.append(Spacer(1, 12))
-    content.append(Paragraph('The Habit Tracking Web Application is poised to enhance user productivity significantly.', styles['Normal']))
+    content.append(Paragraph('Details of testing conducted...', styles['Normal']))
+    content.append(Spacer(1, 24))
+
+    # Conclusion and Future Enhancements
+    content.append(Paragraph('Conclusion and Future Enhancements', blue_heading))
+    content.append(Spacer(1, 12))
+    content.append(Paragraph('Final thoughts and potential future work...', styles['Normal']))
 
     # Build the PDF
-    document.build(content)
+    pdf.build(content)
 
-# Run the report generation
-if __name__ == '__main__':
-    generate_report()
+# Create the report
+generate_report('Habit_Tracking_Report.pdf')
